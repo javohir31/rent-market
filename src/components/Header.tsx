@@ -1,6 +1,6 @@
 import { headerIcons, headerLinks } from "@/data"
 import { Phone } from "lucide-react"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { icons } from "@/assets/icons"
 
 
@@ -21,17 +21,18 @@ const Header = () => {
                         </select>
                     </div>
                     <div className="flex items-center justify-between px-4 py-5 bg-white rounded-3xl mt-2.5">
-                        <icons.logo />
+                        <Link to="/">
+                            <icons.logo />
+                        </Link>
                         <nav className="flex items-center justify-between">
                             {headerLinks.map((el) => (
                                 <NavLink
                                     key={el.id}
                                     to={el.to}
                                     className={({ isActive }) =>
-                                        `mx-2 inline-block transition-transform duration-150 text-[rgba(31,31,31,1)] ${
-                                            isActive
-                                                ? "font-bold text-gray-900"
-                                                : "hover:font-bold hover:scale-105"
+                                        `mx-2 inline-block transition-transform duration-150 text-[rgba(31,31,31,1)] ${isActive
+                                            ? "font-bold text-gray-900"
+                                            : "hover:font-bold hover:scale-105"
                                         }`
                                     }
                                 >

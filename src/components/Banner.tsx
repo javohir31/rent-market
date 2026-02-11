@@ -1,11 +1,15 @@
 import BannerRecom from "./BannerRecom"
+import Products from "./Products"
 
 
 const Banner = () => {
     return (
-        <div className="container">
-            <BannerRecom />
-        </div>
+        <section>
+            <div className="container">
+                <BannerRecom />
+                <Products />
+            </div>
+        </section>
     )
 }
 
