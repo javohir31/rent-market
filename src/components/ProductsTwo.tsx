@@ -1,7 +1,7 @@
 import { CardOneObject } from "@/data"
 import ProductCard from "./ProductCard"
 
-const Products = (props: { title: string }) => {
+const ProductsTwo = (props: { title: string }) => {
 
     const { title  } = props
 
@@ -19,4 +19,4 @@ const Products = (props: { title: string }) => {
     )
 }
 
-export default Products
+export default ProductsTwo

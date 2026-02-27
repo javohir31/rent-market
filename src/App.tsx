@@ -1,10 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home"
 import Layout from "./pages/Layout"
-import Catalog from "./pages/Catalog";
 import Apply from "./pages/Apply";
+import Catalog from "./pages/Catalog";
 import Company from "./pages/Company";
 import Business from "./pages/Business";
+import WishlistPage from "./pages/WishlistPage";
+import CartPage from "./pages/CartPage";
+import { FavoritesProvider } from "../FavoritesContext";
+import { CartProvider } from "../CartContext";
 
 
 
@@ -35,12 +39,24 @@ function App() {
           path: "/forbusiness",
           element: <Business />,
         },
+        {
+          path: "/favorites",
+          element: <WishlistPage />,
+        },
+        {
+          path: "/cart",
+          element: <CartPage />,
+        },
       ],
     },
   ]);
 
   return (
-      <RouterProvider router={routes} />
+    <FavoritesProvider>
+      <CartProvider>
+        <RouterProvider router={routes} />
+      </CartProvider>
+    </FavoritesProvider>
   );
 }
 
