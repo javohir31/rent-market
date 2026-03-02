@@ -7,6 +7,8 @@ import Company from "./pages/Company";
 import Business from "./pages/Business";
 import WishlistPage from "./pages/WishlistPage";
 import CartPage from "./pages/CartPage";
+import AllBlogsPage from "./pages/AllBlogsPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 import { FavoritesProvider } from "../FavoritesContext";
 import { CartProvider } from "../CartContext";
 
@@ -46,6 +48,14 @@ function App() {
         {
           path: "/cart",
           element: <CartPage />,
+        },
+        {
+          path: "/all-blogs",
+          element: <AllBlogsPage />,
+        },
+        {
+          path: "/product/:id",
+          element: <ProductDetailPage />,
         },
       ],
     },

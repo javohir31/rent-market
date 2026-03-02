@@ -48,7 +48,8 @@ const ProductCard = (props: ProductCardProps) => {
     }
   }
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (isInCart(id)) {
       // If already in cart, navigate to cart page
       navigate('/cart')
@@ -70,7 +71,10 @@ const ProductCard = (props: ProductCardProps) => {
   }
 
   return (
-    <div className="bg-white rounded-3xl w-full p-6 shadow-sm group transition-all duration-300 hover:shadow-md">
+    <div
+      onClick={() => navigate(`/product/${id}`)}
+      className="bg-white rounded-3xl w-full p-6 shadow-sm group transition-all duration-300 hover:shadow-md cursor-pointer"
+    >
       {/* Header: title and favorite */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-bold text-[1.25rem] text-[#1F1F1F] truncate">{title}</h3>
