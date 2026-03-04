@@ -2,6 +2,7 @@ import { Heart } from "lucide-react"
 import { useFavorites } from "../../FavoritesContext"
 import { useCart } from "../../CartContext"
 import { useNavigate } from "react-router-dom"
+import { useState } from 'react'
 
 interface ProductCardProps {
   id: number
@@ -28,6 +29,8 @@ const ProductCard = (props: ProductCardProps) => {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites()
   const { addToCart, isInCart } = useCart()
   const navigate = useNavigate()
+  const [added, setAdded] = useState(false) // local feedback state
+  const [popped, setPopped] = useState(false) // for scale animation on click
 
   const toggleFavorite = () => {
     if (isFavorite(id)) {
@@ -49,25 +52,39 @@ const ProductCard = (props: ProductCardProps) => {
   }
 
   const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation()
+
     if (isInCart(id)) {
-      // If already in cart, navigate to cart page
-      navigate('/cart')
-    } else {
-      // If not in cart, add to cart
-      addToCart({
-        id,
-        title,
-        img,
-        currentPrice,
-        originalPrice,
-        rentalText,
-        iconImgOne,
-        iconImgTwo,
-        iconImgThree,
-        iconLabels
-      })
+      // already in cart – just flash feedback
+      setAdded(true)
+      setPopped(true)
+      setTimeout(() => {
+        setAdded(false)
+        setPopped(false)
+      }, 1500)
+      return
     }
+
+    // trigger pop animation
+    setPopped(true)
+    setTimeout(() => setPopped(false), 200)
+
+    addToCart({
+      id,
+      title,
+      img,
+      currentPrice,
+      originalPrice,
+      rentalText,
+      iconImgOne,
+      iconImgTwo,
+      iconImgThree,
+      iconLabels
+    })
+
+    setAdded(true)
+    setTimeout(() => setAdded(false), 1500)
   }
 
   return (
@@ -131,13 +148,19 @@ const ProductCard = (props: ProductCardProps) => {
       {/* Tugma */}
       <button
         onClick={handleAddToCart}
-        className={`w-full text-white py-4 rounded-2xl font-bold text-[1.1rem] uppercase tracking-wider transition-all duration-300 active:scale-[0.98] ${
+        className={`w-full text-white py-4 rounded-2xl font-bold text-[1.1rem] uppercase tracking-wider transition-transform duration-200 ${
+          popped ? 'scale-105' : 'scale-100'
+        } ${
           isInCart(id)
-            ? 'bg-[#22C55E] hover:bg-[#16A34A]' // Green background when in cart
-            : 'bg-[#1F1F1F] hover:bg-[#22C55E]' // Black background when not in cart
+            ? 'bg-[#22C55E] hover:bg-[#16A34A]' // Green when already in cart
+            : 'bg-[#1F1F1F] hover:bg-[#22C55E]' // Black when not
         }`}
       >
-        {isInCart(id) ? 'В корзине' : 'Арендовать'}
+        {isInCart(id)
+          ? 'УЖЕ В КОРЗИНЕ'
+          : added
+          ? 'ДОБАВЛЕНО'
+          : 'АРЕНДОВАТЬ'}
       </button>
     </div>
   )

@@ -7,6 +7,8 @@ export interface CartItem {
   currentPrice: string;
   originalPrice: string;
   rentalText: string;
+  // track whether customer chose weekly or monthly rental on detail page
+  rentalPeriod?: 'week' | 'month';
   iconImgOne: string;
   iconImgTwo: string;
   iconImgThree: string;
@@ -16,7 +18,14 @@ export interface CartItem {
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Omit<CartItem, 'quantity'>) => void;
+  /**
+   * Add an item to cart; quantity defaults to 1.  
+   * If the same product id + rentalPeriod already exists it increments quantity.
+   */
+  addToCart: (
+    product: Omit<CartItem, 'quantity'> & { rentalPeriod?: 'week' | 'month' },
+    quantity?: number
+  ) => void;
   removeFromCart: (productId: number) => void;
   increaseQuantity: (productId: number) => void;
   decreaseQuantity: (productId: number) => void;
@@ -54,17 +63,24 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product: Omit<CartItem, 'quantity'>) => {
+  const addToCart = (
+    product: Omit<CartItem, 'quantity'> & { rentalPeriod?: 'week' | 'month' },
+    quantity: number = 1
+  ) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
+      // consider both id and rentalPeriod when finding duplicates
+      const existingItem = prev.find(
+        (item) =>
+          item.id === product.id && item.rentalPeriod === product.rentalPeriod
+      );
       if (existingItem) {
         return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+          item.id === product.id && item.rentalPeriod === product.rentalPeriod
+            ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        return [...prev, { ...product, quantity: 1 }];
+        return [...prev, { ...product, quantity }];
       }
     });
   };
