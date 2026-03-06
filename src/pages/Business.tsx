@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import OrderTabs from '@/components/tabs/tabsOrder';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import AcountTabs from '@/components/tabs/tabsAcount';
