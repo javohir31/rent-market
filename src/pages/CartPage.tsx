@@ -1,5 +1,5 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { useCart, type CartItem } from "../../CartContext";
+import { useCart, type CartItem } from "../context/CartContext"
 import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, Truck, MapPin, CreditCard } from "lucide-react";
-import { useCart } from "../../CartContext";
+import { useCart } from "../context/CartContext";
 
 const Apply = () => {
   const { cartItems, getTotalPrice } = useCart();

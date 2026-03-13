@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { STORAGE_KEYS } from '@/utils/constants';
 
 export interface CartItem {
   id: number;
@@ -7,7 +9,6 @@ export interface CartItem {
   currentPrice: string;
   originalPrice: string;
   rentalText: string;
-  // track whether customer chose weekly or monthly rental on detail page
   rentalPeriod?: 'week' | 'month';
   iconImgOne: string;
   iconImgTwo: string;
@@ -18,12 +19,8 @@ export interface CartItem {
 
 interface CartContextType {
   cartItems: CartItem[];
-  /**
-   * Add an item to cart; quantity defaults to 1.  
-   * If the same product id + rentalPeriod already exists it increments quantity.
-   */
   addToCart: (
-    product: Omit<CartItem, 'quantity'> & { rentalPeriod?: 'week' | 'month' },
+    product: Omit<CartItem, 'quantity'>,
     quantity?: number
   ) => void;
   removeFromCart: (productId: number) => void;
@@ -42,55 +39,39 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  // 1. useLocalStorage handles the initial load and the persistence automatically.
+  // No need for manual useEffect with localStorage.getItem/setItem.
+  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>(STORAGE_KEYS.CART_ITEMS, []);
+  
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      try {
-        setCartItems(JSON.parse(storedCart));
-      } catch (error) {
-        console.error("Failed to parse cart from local storage", error);
-      }
-    }
-  }, []);
-
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  const addToCart = (
-    product: Omit<CartItem, 'quantity'> & { rentalPeriod?: 'week' | 'month' },
+  const addToCart = useCallback((
+    product: Omit<CartItem, 'quantity'>,
     quantity: number = 1
   ) => {
     setCartItems((prev) => {
-      // consider both id and rentalPeriod when finding duplicates
       const existingItem = prev.find(
-        (item) =>
-          item.id === product.id && item.rentalPeriod === product.rentalPeriod
+        (item) => item.id === product.id && item.rentalPeriod === product.rentalPeriod
       );
+
       if (existingItem) {
         return prev.map((item) =>
           item.id === product.id && item.rentalPeriod === product.rentalPeriod
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
-      } else {
-        return [...prev, { ...product, quantity }];
       }
+      return [...prev, { ...product, quantity }];
     });
-  };
+  }, [setCartItems]);
 
-  const removeFromCart = (productId: number) => {
+  const removeFromCart = useCallback((productId: number) => {
     setCartItems((prev) => prev.filter((item) => item.id !== productId));
     setSelectedItems((prev) => prev.filter((id) => id !== productId));
-  };
+  }, [setCartItems]);
 
-  const increaseQuantity = (productId: number) => {
+  const increaseQuantity = useCallback((productId: number) => {
     setCartItems((prev) =>
       prev.map((item) =>
         item.id === productId
@@ -98,9 +79,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           : item
       )
     );
-  };
+  }, [setCartItems]);
 
-  const decreaseQuantity = (productId: number) => {
+  const decreaseQuantity = useCallback((productId: number) => {
     setCartItems((prev) =>
       prev.map((item) =>
         item.id === productId && item.quantity > 1
@@ -108,30 +89,32 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           : item
       )
     );
-  };
+  }, [setCartItems]);
 
-  const getTotalPrice = () => {
+  const getTotalPrice = useCallback(() => {
     return cartItems.reduce((total, item) => {
-      const price = parseFloat(item.currentPrice.replace(/\s/g, '').replace('сум.', ''));
+      // Robust price parsing: remove spaces and non-numeric characters except decimals
+      const priceString = item.currentPrice.replace(/\s/g, '').replace(/[^\d.]/g, '');
+      const price = parseFloat(priceString) || 0;
       return total + (price * item.quantity);
     }, 0);
-  };
+  }, [cartItems]);
 
-  const getTotalItems = () => {
+  const getTotalItems = useCallback(() => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
-  };
+  }, [cartItems]);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCartItems([]);
     setSelectedItems([]);
     setSelectAll(false);
-  };
+  }, [setCartItems]);
 
-  const isInCart = (productId: number) => {
+  const isInCart = useCallback((productId: number) => {
     return cartItems.some((item) => item.id === productId);
-  };
+  }, [cartItems]);
 
-  const toggleSelectAll = () => {
+  const toggleSelectAll = useCallback(() => {
     if (selectAll) {
       setSelectedItems([]);
       setSelectAll(false);
@@ -139,20 +122,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       setSelectedItems(cartItems.map((item) => item.id));
       setSelectAll(true);
     }
-  };
+  }, [selectAll, cartItems]);
 
-  const toggleItemSelection = (productId: number) => {
+  const toggleItemSelection = useCallback((productId: number) => {
     setSelectedItems((prev) => {
-      const newSelected = prev.includes(productId)
+      const isSelected = prev.includes(productId);
+      const newSelected = isSelected
         ? prev.filter((id) => id !== productId)
         : [...prev, productId];
 
-      // Update selectAll state
       setSelectAll(newSelected.length === cartItems.length && cartItems.length > 0);
-
       return newSelected;
     });
-  };
+  }, [cartItems.length]);
 
   return (
     <CartContext.Provider value={{

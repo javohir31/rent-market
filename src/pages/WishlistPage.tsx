@@ -1,4 +1,4 @@
-import { useFavorites, type Product } from '../../FavoritesContext';
+import { useFavorites, type Product } from '../context/FavoritesContext';
 import ProductCard from '../components/ProductCard';
 
 const WishlistPage = () => {

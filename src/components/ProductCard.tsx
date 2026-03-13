@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react"
-import { useFavorites } from "../../FavoritesContext"
-import { useCart } from "../../CartContext"
+import { useFavorites } from "../context/FavoritesContext"
+import { useCart } from "../context/CartContext"
 import { useNavigate } from "react-router-dom"
 import { useState } from 'react'
 
@@ -95,27 +95,27 @@ const ProductCard = (props: ProductCardProps) => {
       {/* Header: title and favorite */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-bold text-[1.25rem] text-[#1F1F1F] truncate">{title}</h3>
-        <button 
+        <button
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
             toggleFavorite()
-          }} 
+          }}
           className="active:scale-125 transition-transform outline-none"
         >
-          <Heart 
-            size={24} 
-            className={isFavorite(id) ? "fill-red-500 text-red-500" : "text-gray-400"} 
+          <Heart
+            size={24}
+            className={isFavorite(id) ? "fill-red-500 text-red-500" : "text-gray-400"}
           />
         </button>
       </div>
 
       {/* Image section */}
       <div className="h-[200px] flex items-center justify-center overflow-hidden rounded-2xl mb-6">
-        <img 
-          src={img} 
-          alt={title} 
-          className="max-h-full object-contain transition-transform duration-500 group-hover:scale-105" 
+        <img
+          src={img}
+          alt={title}
+          className="max-h-full object-contain transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
@@ -148,22 +148,21 @@ const ProductCard = (props: ProductCardProps) => {
       {/* Tugma */}
       <button
         onClick={handleAddToCart}
-        className={`w-full text-white py-4 rounded-2xl font-bold text-[1.1rem] uppercase tracking-wider transition-transform duration-200 ${
-          popped ? 'scale-105' : 'scale-100'
-        } ${
-          isInCart(id)
+        className={`w-full text-white py-4 rounded-2xl font-bold text-[1.1rem] uppercase tracking-wider transition-transform duration-200 ${popped ? 'scale-105' : 'scale-100'
+          } ${isInCart(id)
             ? 'bg-[#22C55E] hover:bg-[#16A34A]' // Green when already in cart
             : 'bg-[#1F1F1F] hover:bg-[#22C55E]' // Black when not
-        }`}
+          }`}
       >
         {isInCart(id)
           ? 'УЖЕ В КОРЗИНЕ'
           : added
-          ? 'ДОБАВЛЕНО'
-          : 'АРЕНДОВАТЬ'}
+            ? 'ДОБАВЛЕНО'
+            : 'АРЕНДОВАТЬ'}
       </button>
     </div>
   )
 }
 
 export default ProductCard
+
