@@ -1,10 +1,10 @@
 export interface CardOneObjectProps {
     id: number;
     title: string;
-    img: any;
-    iconImgOne: any;
-    iconImgTwo: any;
-    iconImgThree: any;
+    img: string;
+    iconImgOne: string;
+    iconImgTwo: string;
+    iconImgThree: string;
     currentPrice: string;
     originalPrice: string;
     rentalText: string;

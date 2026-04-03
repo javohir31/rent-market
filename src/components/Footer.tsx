@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Send, Facebook, Instagram, Youtube } from 'lucide-react'; // WhatsApp uchun o'ziga xos SVG ishlatamiz
 

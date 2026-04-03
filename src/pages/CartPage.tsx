@@ -1,5 +1,6 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { useCart, type CartItem } from "../context/CartContext"
+import type { CartItem } from "../context/CartContext"
+import { useCart } from "@/hooks/useCart"
 import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
@@ -22,8 +23,8 @@ const CartPage = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-[#1F1F1F] mb-8">Корзина</h1>
+      <div className="container mx-auto px-2 py-6 sm:px-4 sm:py-8">
+        <h1 className="mb-6 text-2xl font-bold text-[#1F1F1F] sm:mb-8 sm:text-4xl">Корзина</h1>
         <div className="text-center py-16">
           <p className="text-xl text-gray-500">Ваша корзина пуста</p>
         </div>
@@ -32,8 +33,8 @@ const CartPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-[#1F1F1F] mb-8">Корзина</h1>
+    <div className="container mx-auto px-2 py-6 sm:px-4 sm:py-8">
+      <h1 className="mb-6 text-2xl font-bold text-[#1F1F1F] sm:mb-8 sm:text-4xl">Корзина</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Side - Cart Items */}
@@ -54,11 +55,8 @@ const CartPage = () => {
           {/* Cart Items */}
           <div className="space-y-4">
             {cartItems.map((item: CartItem) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
-              >
-                <div className="flex items-center gap-4">
+              <div key={item.id} className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   {/* Checkbox */}
                   <input
                     type="checkbox"
@@ -68,7 +66,7 @@ const CartPage = () => {
                   />
 
                   {/* Product Image */}
-                  <div className="w-20 h-20 flex-shrink-0">
+                  <div className="h-16 w-16 shrink-0 sm:h-20 sm:w-20">
                     <img
                       src={item.img}
                       alt={item.title}
@@ -77,11 +75,11 @@ const CartPage = () => {
                   </div>
 
                   {/* Product Details */}
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg text-[#1F1F1F] mb-2">
+                  <div className="min-w-40 flex-1">
+                    <h3 className="mb-1 text-base font-bold text-[#1F1F1F] sm:mb-2 sm:text-lg">
                       {item.title}
                     </h3>
-                    <p className="text-[#1F1F1F] font-semibold text-lg">
+                    <p className="text-base font-semibold text-[#1F1F1F] sm:text-lg">
                       {item.currentPrice}
                     </p>
                     <p className="text-sm text-gray-500">{item.rentalText}</p>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { CardOneObject } from '@/data'
 import { Gift } from 'lucide-react'
-import { useCart } from '../context/CartContext'
+import { useCart } from '@/hooks/useCart'
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()

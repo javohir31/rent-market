@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, Truck, MapPin, CreditCard } from "lucide-react";
-import { useCart } from "../context/CartContext";
+import { useCart } from "@/hooks/useCart";
 
 const Apply = () => {
   const { cartItems, getTotalPrice } = useCart();
@@ -60,9 +60,9 @@ const Apply = () => {
   };
 
   return (
-    <div className="min-h-screen py-8 mt-9">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-[#1F1F1F] mb-8">Оформление заказа</h1>
+    <div className="mt-5 min-h-screen py-6 sm:mt-7 sm:py-8">
+      <div className="container mx-auto px-2 sm:px-4">
+        <h1 className="mb-6 text-2xl font-bold text-[#1F1F1F] sm:mb-8 sm:text-4xl">Оформление заказа</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Side - Checkout Form */}

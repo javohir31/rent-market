@@ -1,45 +1,62 @@
 import { headerIcons, headerLinks } from "@/data"
 import { Phone, Menu, ChevronDown, X } from "lucide-react"
 import { Link, NavLink } from "react-router-dom"
-import { useCart } from "../context/CartContext"
-import { useFavorites } from "../context/FavoritesContext" // Favorites hookini qo'shdik
-import { useState } from "react"
+import { useCart } from "@/hooks/useCart"
+import { useFavorites } from "@/hooks/useFavorites"
+import { useEffect, useState } from "react"
 import ConsultationModal from "./ConsultationModal"
 
 const Header = () => {
   const { getTotalItems } = useCart()
-  const { favorites } = useFavorites() // Saralanganlar soni uchun
+  const { favorites } = useFavorites()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [language, setLanguage] = useState<"ru" | "en">("ru")
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    document.body.style.overflow = "hidden"
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", onKeyDown)
+    }
+  }, [isMobileMenuOpen])
 
   return (
-    <header className="bg-transparent">
-      <div className="container mx-auto">
-        {/* Top Bar */}
-        <div className="flex items-center justify-between px-4 py-3 bg-white rounded-b-3xl shadow-sm">
+    <header className="bg-transparent pt-2 sm:pt-3">
+      <div className="mx-auto w-full max-w-[1440px]">
+        <div className="flex items-center justify-between rounded-b-2xl bg-white px-3 py-2 shadow-sm sm:rounded-b-3xl sm:px-4 sm:py-3">
           <div className="flex gap-1 items-center text-gray-700">
-            <Phone size={18} />
-            <span className="text-sm font-medium">+998 71 200 14 41</span>
+            <Phone size={16} />
+            <span className="text-xs font-medium sm:text-sm">+998 71 200 14 41</span>
           </div>
           <select
             aria-label="Select language"
-            className="text-sm outline-none bg-transparent cursor-pointer font-medium"
+            value={language}
+            onChange={(event) => setLanguage(event.target.value as "ru" | "en")}
+            className="cursor-pointer bg-transparent text-xs font-medium outline-none sm:text-sm"
           >
             <option value="ru">Русский</option>
             <option value="en">English</option>
           </select>
         </div>
 
-        {/* Main Nav Bar */}
-        <div className="flex items-center justify-between px-4 py-3 bg-white rounded-3xl mt-2.5 shadow-sm">
+        <div className="mt-2 flex items-center justify-between rounded-2xl bg-white px-3 py-3 shadow-sm sm:mt-2.5 sm:rounded-3xl sm:px-4">
           <Link to="/" className="flex items-center gap-1">
-            <span className="inline-flex px-2 py-1 rounded-full border border-green-500 text-green-600 text-lg font-bold">
+            <span className="inline-flex rounded-full border border-green-500 px-2 py-0.5 text-base font-bold text-green-600 sm:px-2 sm:py-1 sm:text-lg">
               rent
             </span>
-            <span className="text-xl font-bold text-[#1F1F1F]">market</span>
+            <span className="text-lg font-bold text-[#1F1F1F] sm:text-xl">market</span>
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center">
             {headerLinks.map((el) => (
               <NavLink
@@ -56,14 +73,13 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Mobile controls */}
           <div className="flex items-center gap-2 md:hidden">
             <button
               type="button"
               className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-green-500"
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => setLanguage((prev) => (prev === "ru" ? "en" : "ru"))}
             >
-              RU
+              {language.toUpperCase()}
               <ChevronDown size={16} />
             </button>
 
@@ -77,7 +93,6 @@ const Header = () => {
             </button>
           </div>
 
-          {/* Header icons desktop */}
           <div className="hidden md:flex items-center gap-4">
             {headerIcons.map((el) => {
               const Icon = el.icon
@@ -123,11 +138,10 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile sheet */}
         {isMobileMenuOpen && (
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}>
             <div
-              className="absolute right-0 top-0 h-full w-64 bg-white p-5 shadow-2xl overflow-y-auto"
+              className="absolute right-0 top-0 h-full w-[78%] max-w-72 overflow-y-auto bg-white p-5 shadow-2xl"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-6">
@@ -194,7 +208,6 @@ const Header = () => {
         )}
       </div>
 
-      {/* Consultation Modal */}
       <ConsultationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </header>
   )

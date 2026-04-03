@@ -3,15 +3,17 @@ import Footer from "@/components/Footer"
 import { Outlet } from "react-router-dom"
 import { Toaster } from "@/components/ui/sonner"
 
-const layout = () => {
+const Layout = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-[#FAFAFA] text-[#1F1F1F]">
       <Header />
-      <Outlet />
+      <main className="mx-auto w-full max-w-[1440px] px-3 sm:px-4 md:px-6">
+        <Outlet />
+      </main>
       <Toaster />
       <Footer />
     </div>
   )
 }
 
-export default layout
+export default Layout

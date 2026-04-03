@@ -12,55 +12,52 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { CartProvider } from "./context/CartContext";
 
-
-
+const routes = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/catalog",
+        element: <Catalog />,
+      },
+      {
+        path: "/howtoapply",
+        element: <Apply />,
+      },
+      {
+        path: "/aboutthecompany",
+        element: <Company />,
+      },
+      {
+        path: "/forbusiness",
+        element: <Business />,
+      },
+      {
+        path: "/favorites",
+        element: <WishlistPage />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
+        path: "/all-blogs",
+        element: <AllBlogsPage />,
+      },
+      {
+        path: "/product/:id",
+        element: <ProductDetailPage />,
+      },
+    ],
+  },
+]);
 
 function App() {
-
- const routes = createBrowserRouter([
-    {
-      path: "/",
-      element: <Layout />,
-      children: [
-        {
-          index: true,
-          element: <Home />,
-        },
-        {
-          path: "/catalog",
-          element: <Catalog />,
-        },
-        {
-          path: "/howtoapply",
-          element: <Apply />,
-        },
-        {
-          path: "/aboutthecompany",
-          element: <Company />,
-        },
-        {
-          path: "/forbusiness",
-          element: <Business />,
-        },
-        {
-          path: "/favorites",
-          element: <WishlistPage />,
-        },
-        {
-          path: "/cart",
-          element: <CartPage />,
-        },
-        {
-          path: "/all-blogs",
-          element: <AllBlogsPage />,
-        },
-        {
-          path: "/product/:id",
-          element: <ProductDetailPage />,
-        },
-      ],
-    },
-  ]);
 
   return (
     <FavoritesProvider>
