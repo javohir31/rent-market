@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <header className="bg-transparent pt-2 sm:pt-3">
-      <div className="mx-auto w-full max-w-[1440px]">
+      <div className="container">
         <div className="flex items-center justify-between rounded-b-2xl bg-white px-3 py-2 shadow-sm sm:rounded-b-3xl sm:px-4 sm:py-3">
           <div className="flex gap-1 items-center text-gray-700">
             <Phone size={16} />

@@ -58,8 +58,8 @@ interface FeatureCardProps {
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title }) => {
   return (
-    <div className="relative group">
-      <div className="absolute inset-0 bg-blue-500 rounded-2xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
+    <div className="">
+      <div className="bg-blue-500 rounded-2xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
       <div className="relative bg-blue-500/30 backdrop-blur-sm border border-blue-400/30 rounded-2xl p-8 hover:bg-blue-500/40 transition-all duration-300 h-full flex flex-col items-start">
         {/* Icon Container */}
         <div className="flex items-center justify-center w-16 h-16 bg-blue-400/40 rounded-xl mb-6 group-hover:bg-blue-400/50 transition-colors duration-300">
