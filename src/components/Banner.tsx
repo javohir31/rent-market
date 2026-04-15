@@ -18,8 +18,8 @@ const Banner = () => {
         <section>
             <div className="container">
                 <BannerRecom />
-                {/* <BannerTwo /> */}
-                {/* <Products title="Велосипеды" />
+                {/* <BannerTwo />
+                <Products title="Велосипеды" />
                 <BannerInfo img={express} />
                 <Products title="Спортивный тренажеры" />
                 <BannerInfo img={bicycleGift} reverse />
