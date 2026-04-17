@@ -1,5 +1,5 @@
-import { useState, ChangeEvent, FormEvent } from "react";
-
+import { useState, type ChangeEvent, type FormEvent } from "react";
+// ChangeEvent
 const AcountTabs = () => {
     // 1. State: Barcha inputlar uchun bitta obyekt
     const [formData, setFormData] = useState({
