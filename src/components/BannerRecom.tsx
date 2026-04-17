@@ -1,4 +1,4 @@
-import { icons } from "@/assets/icons"
+// import { icons } from "@/assets/icons"
 import BannerRecomTwo from "../assets/BannerRecom-two.png"
 
 const BannerRecom = () => {
