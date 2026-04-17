@@ -33,3 +33,5 @@ const Home = () => {
 }
 
 export default Home
+
+// bitib qolar
