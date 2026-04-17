@@ -141,8 +141,8 @@ const ProductCard = (props: ProductCardProps) => {
       <div className="grid grid-cols-3 gap-2 bg-[#F8F8F8] rounded-[20px] p-3 mb-6">
         {featureItems.map((item, idx) => (
           <div key={idx} className="flex flex-col items-center gap-1.5 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-50 sm:h-16 sm:w-16">
-              <img src={item.img} alt={item.label} className="h-8 w-8 object-contain sm:h-10 sm:w-10" />
+            <div className="flex w-20 items-center justify-center rounded-full bg-gray-50">
+              <img src={item.img} alt={item.label} className="w-100 object-contain" />
             </div>
             <span className="text-[0.6rem] font-medium leading-tight text-[#666] sm:text-[0.65rem]">
               {item.label}
